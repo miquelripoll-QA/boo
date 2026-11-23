@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0e1f2e">
+<meta name="robots" content="noindex">
+<title>Fes cagar el Tió!</title>
+<style>
+  :root { --bg: #0e1f2e; --bg2: #18364d; --ink: #fff8ec; --muted: #c9d8e6; --red: #c8102e; --gold: #e6b422; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: radial-gradient(ellipse at 50% 15%, var(--bg2), var(--bg) 70%);
+    color: var(--ink); font: 17px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+    display: grid; place-items: center; overflow: hidden; -webkit-user-select: none; user-select: none;
+    touch-action: manipulation;
+  }
+  .flake { position: fixed; top: -2vh; width: 6px; height: 6px; border-radius: 50%; background: #fff; opacity: .7;
+           animation: fall linear infinite; }
+  @keyframes fall { to { transform: translate(var(--dx), 104vh); } }
+
+  main { position: relative; text-align: center; padding: 20px 16px; max-width: 440px; width: 100%; }
+  h1 { font-size: 27px; margin: 0 0 6px; }
+  .sub { color: var(--muted); margin: 0 0 8px; }
+  .stage { position: relative; height: 230px; display: grid; place-items: center; cursor: pointer; }
+  .tio { width: 250px; max-width: 80vw; transition: transform .1s; }
+  .tio.hit { animation: hit .25s ease-out; }
+  @keyframes hit { 30% { transform: translateX(-6px) rotate(-4deg) scale(.96); } 60% { transform: translateX(5px) rotate(3deg); } }
+  .stick { position: absolute; right: 2%; top: 30%; width: 110px; transform-origin: 90% 90%; transform: rotate(35deg);
+           pointer-events: none; }
+  .stick.swing { animation: swing .25s ease-in; }
+  @keyframes swing { 50% { transform: rotate(-30deg); } }
+  .chant { min-height: 34px; font-size: 24px; font-weight: 800; color: var(--gold); }
+  .chant.pop { animation: pop .35s ease-out; }
+  @keyframes pop { from { transform: scale(.6); opacity: 0; } }
+
+  .hit-btn {
+    font-family: inherit; font-size: 20px; font-weight: 700; line-height: 1; color: #2b1608; background: var(--gold);
+    border: 0; border-radius: 999px; padding: 17px 28px; margin-top: 10px; cursor: pointer;
+    box-shadow: 0 6px 0 #a9791a, 0 0 36px rgba(230,180,34,.45);
+  }
+  .hit-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #a9791a; }
+  .dots { margin-top: 14px; letter-spacing: 6px; font-size: 18px; }
+
+  .prize { position: fixed; inset: 0; display: none; place-items: center; padding: 20px 16px;
+           background: rgba(8,18,28,.88); }
+  .prize .card { max-width: 400px; width: 100%; background: var(--ink); color: #2b1608; border-radius: 18px;
+                 padding: 26px 22px; text-align: center; border: 4px solid var(--gold); animation: rise .5s ease-out; }
+  .prize .gift { font-size: 64px; animation: wiggle 1.2s ease-in-out infinite; }
+  @keyframes wiggle { 25% { transform: rotate(-8deg); } 75% { transform: rotate(8deg); } }
+  @keyframes rise { from { transform: translateY(30px) scale(.9); opacity: 0; } }
+  .prize h2 { margin: 6px 0 10px; font-size: 24px; }
+  .prize p { font-size: 18px; margin: 0 0 18px; }
+  .prize .again { font-family: inherit; font-size: 17px; font-weight: 700; border: 0; border-radius: 999px;
+                  padding: 13px 22px; background: var(--red); color: #fff; cursor: pointer; }
+  .prize .small { font-size: 13px; color: #6b5a48; margin-top: 14px; }
+  body.won .prize { display: grid; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .flake, .tio.hit, .stick.swing, .prize .gift, .chant.pop { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<main>
+  <h1>Fes cagar el Tió! 🪵</h1>
+  <p class="sub">The Tió has been eating well. Hit it 5 times and see what it leaves you 🎁</p>
+  <div class="stage" id="stage" aria-label="Hit the Tió">
+    <svg class="tio" id="tio" viewBox="0 0 130 80" aria-hidden="true">
+      <g stroke="#5a3a1a" stroke-width="5" stroke-linecap="round"><path d="M34 52 L28 76 M78 52 L84 76"/></g>
+      <rect x="8" y="22" width="98" height="38" rx="19" fill="#8b5a2b" stroke="#5a3a1a" stroke-width="2"/>
+      <path d="M20 34 Q40 30 60 35 M24 48 Q48 44 70 49" stroke="#6b4421" stroke-width="2" fill="none"/>
+      <path d="M30 20 L80 20 L84 52 L26 52 Z" fill="#c8102e"/>
+      <path d="M38 20 L36 52 M50 20 L50 52 M62 20 L64 52 M74 20 L78 52 M28 30 L82 30 M27 42 L83 42" stroke="#f3e6c8" stroke-width="2" opacity=".85"/>
+      <ellipse cx="108" cy="41" rx="17" ry="20" fill="#d9a066" stroke="#8b5a2b" stroke-width="2"/>
+      <ellipse cx="102" cy="39" rx="2.4" ry="3" fill="#2b1608"/><ellipse cx="114" cy="39" rx="2.4" ry="3" fill="#2b1608"/>
+      <circle cx="98" cy="47" r="3" fill="#ff8a8a" opacity=".6"/><circle cx="118" cy="47" r="3" fill="#ff8a8a" opacity=".6"/>
+      <path d="M102 48 Q108 55 114 48" stroke="#2b1608" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <ellipse cx="108" cy="44" rx="2.2" ry="1.6" fill="#b06a3a"/>
+      <path d="M94 26 Q104 10 122 16 Q128 20 126 28 Q116 22 106 28 Q100 30 94 26 Z" fill="#c8102e"/>
+      <path d="M94 26 Q104 30 112 26" stroke="#7a0c15" stroke-width="3" fill="none"/>
+    </svg>
+    <svg class="stick" id="stick" viewBox="0 0 120 30" aria-hidden="true">
+      <path d="M4 16 L112 12" stroke="#7a4b2a" stroke-width="8" stroke-linecap="round"/>
+      <path d="M40 14 L52 4" stroke="#7a4b2a" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div class="chant" id="chant"></div>
+  <button class="hit-btn" id="hit">🥢 Hit the Tió!</button>
+  <div class="dots" id="dots">⚪⚪⚪⚪⚪</div>
+</main>
+
+<div class="prize" role="dialog" aria-live="polite">
+  <div class="card">
+    <div class="gift">🎁</div>
+    <h2>The Tió left you…</h2>
+    <p id="prize"></p>
+    <button class="again" id="again">🥢 Hit it again</button>
+    <div class="small">Bon Nadal from the MadBox Barcelona office! 🎄</div>
+  </div>
+</div>
+
+<script>
+  const HITS = 5;
+  const CHANTS = ['Caga tió!', 'Tió de Nadal!', 'Caga torrons!', 'Que són més bons!', 'Caga tió!!!'];
+  const PRIZES = [
+    '🍫 A turrón of your choice (redeem in the kitchen, if there is any left).',
+    '☕ A coffee from whoever is sitting to your left.',
+    '🎶 The right to pick the office playlist for one hour.',
+    '🧦 A pair of socks. A classic never fails.',
+    '⭐ A gold star for your code reviews this year.',
+    '🦌 One imaginary reindeer. Please do not feed it after midnight.',
+    '🍀 Good luck for El Gordo (no refunds).',
+    '🪵 Absolutely nothing. The Tió says: try again next year!',
+    '😂 Why did the Christmas tree go to the barber? It needed a trim.',
+    '😂 What do snowmen eat for breakfast? Frosted flakes.',
+    '😂 Why is Santa so good at karate? He has a black belt.',
+    '📚 In Catalonia the Tió is "fed" from 8 December and hit with sticks at Christmas so it leaves presents.',
+    '📚 On 26 December Catalans celebrate Sant Esteve, usually with canelons made from Christmas leftovers.',
+    '📚 The caganer hides somewhere in Catalan nativity scenes. Spotting him is part of the fun.',
+    '📚 The El Gordo numbers are sung out by schoolchildren during the draw on 22 December.',
+  ];
+
+  // falling snow behind everything
+  for (let i = 0; i < 24; i++) {
+    const f = document.createElement('div');
+    f.className = 'flake';
+    const s = 3 + Math.random() * 5;
+    Object.assign(f.style, { left: `${Math.random() * 100}vw`, width: `${s}px`, height: `${s}px`,
+      animationDuration: `${6 + Math.random() * 8}s`, animationDelay: `${-Math.random() * 12}s` });
+    f.style.setProperty('--dx', `${(Math.random() - 0.5) * 60}px`);
+    document.body.prepend(f);
+  }
+
+  let audio, hits = 0;
+  // A short wooden "thwack": a noise burst and a low knock. Phones only allow sound after a tap.
+  function thwack() {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    audio = audio || new AC();
+    audio.resume();
+    const t = audio.currentTime;
+    const buf = audio.createBuffer(1, audio.sampleRate * 0.12, audio.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / data.length) ** 3;
+    const noise = audio.createBufferSource(), band = audio.createBiquadFilter(), ng = audio.createGain();
+    noise.buffer = buf; band.type = 'bandpass'; band.frequency.value = 1800; band.Q.value = 1.2; ng.gain.value = 0.7;
+    noise.connect(band); band.connect(ng); ng.connect(audio.destination); noise.start(t);
+    const knock = audio.createOscillator(), kg = audio.createGain();
+    knock.frequency.setValueAtTime(180, t); knock.frequency.exponentialRampToValueAtTime(70, t + 0.12);
+    kg.gain.setValueAtTime(0.6, t); kg.gain.exponentialRampToValueAtTime(0.0001, t + 0.15);
+    knock.connect(kg); kg.connect(audio.destination); knock.start(t); knock.stop(t + 0.16);
+  }
+
+  const $ = id => document.getElementById(id);
+  const restart = (el, cls) => { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); };
+
+  function hit() {
+    if (document.body.classList.contains('won')) return;
+    hits++;
+    thwack();
+    if (navigator.vibrate) navigator.vibrate(40);
+    restart($('tio'), 'hit');
+    restart($('stick'), 'swing');
+    $('chant').textContent = CHANTS[hits - 1];
+    restart($('chant'), 'pop');
+    $('dots').textContent = '🟡'.repeat(hits) + '⚪'.repeat(HITS - hits);
+    if (hits >= HITS) {
+      setTimeout(() => {
+        $('prize').textContent = PRIZES[Math.floor(Math.random() * PRIZES.length)];
+        document.body.classList.add('won');
+        if (navigator.vibrate) navigator.vibrate([120, 60, 120]);
+      }, 450);
+    }
+  }
+
+  $('hit').addEventListener('click', hit);
+  $('stage').addEventListener('click', hit);
+  $('again').addEventListener('click', () => {
+    hits = 0;
+    $('chant').textContent = '';
+    $('dots').textContent = '⚪'.repeat(HITS);
+    document.body.classList.remove('won');
+  });
+</script>
+</body>
+</html>
